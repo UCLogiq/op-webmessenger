@@ -45,13 +45,50 @@
       right: 10px;
       width: 200px; /* Adjust the width as needed */
     }
+    .start-chat-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      display: none; /* Initially hide the button */
+    }
   </style>
+  <script>
+    // Subscribe to the Messenger.ready event
+    Genesys('subscribe', 'Messenger.ready', function () {
+      // Show the start chat button when the messenger is ready
+      document.querySelector('.start-chat-button').style.display = 'inline-block';
+      console.log('Messenger is ready');
+    });
+
+    function startWebChat() {
+      console.log('Web chat started');
+      Genesys(
+        'command',
+        'Messenger.open',
+        {},
+        () => {
+          /*fulfilled callback*/
+          console.log('Messenger opened');
+        },
+        (error) => {
+          /*rejected callback*/
+          console.log("Couldn't open messenger.", error);
+        }
+      );
+    }
+  </script>
 </head>
 <body>
   <img src="assets/cxlogiq_logo_PNG.png" alt="CXLogiq Logo" class="logo">
   <div class="container">
     <h1>Welcome to the OP Genesys Cloud Web Messenger Test Page</h1>
     <p>Need assistance? Use the chat widget to connect with us!</p>
+    <button class="start-chat-button" onclick="startWebChat()">Start Web Chat</button>
   </div>
 </body>
 </html>
