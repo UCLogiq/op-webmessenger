@@ -56,6 +56,16 @@
       margin-top: 20px;
       display: none; /* Initially hide the button */
     }
+    .bot-chat-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
   </style>
   <script>
     // Subscribe to the Messenger.ready event
@@ -81,6 +91,10 @@
         }
       );
     }
+
+    function navigateToBot() {
+      window.location.href = 'bot.html';
+    }
   </script>
 </head>
 <body>
@@ -89,6 +103,7 @@
     <h1>Welcome to the OP Genesys Cloud Web Messenger Test Page</h1>
     <p>Need assistance? Use the chat widget to connect with us!</p>
     <button class="start-chat-button" onclick="startWebChat()">Start Web Chat</button>
+    <button class="bot-chat-button" onclick="navigateToBot()">Go to Bot</button>
   </div>
 </body>
 </html>
