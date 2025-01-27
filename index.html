@@ -56,7 +56,7 @@
       margin-top: 20px;
       display: none; /* Initially hide the button */
     }
-    .bot-chat-button {
+    .navigate-bot-button {
       padding: 10px 20px;
       font-size: 16px;
       cursor: pointer;
@@ -65,6 +65,22 @@
       border: none;
       border-radius: 5px;
       margin-top: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      padding: 8px;
+      width: 50ch; /* Set the width to 50 characters */
+      box-sizing: border-box;
+    }
+    .required::after {
+      content: " *";
+      color: red;
     }
   </style>
   <script>
@@ -76,7 +92,12 @@
     });
 
     function startWebChat() {
-      console.log('Web chat started');
+      const firstName = document.getElementById('first-name').value;
+      const lastName = document.getElementById('last-name').value;
+      const email = document.getElementById('email').value;
+      const studentId = document.getElementById('student-id').value;
+      const phoneNumber = document.getElementById('phone-number').value;
+      console.log('Web chat started with first name:', firstName, 'last name:', lastName, 'email:', email, 'student ID:', studentId, 'phone number:', phoneNumber);
       Genesys(
         'command',
         'Messenger.open',
@@ -84,6 +105,17 @@
         () => {
           /*fulfilled callback*/
           console.log('Messenger opened');
+          Genesys('command', 'Database.set', {
+            messaging: {
+              customAttributes: {
+                wm_first_name: firstName,
+                wm_last_name: lastName,
+                wm_email: email,
+                wm_student_id: studentId,
+                wm_phone_number: phoneNumber
+              }
+            }
+          });
         },
         (error) => {
           /*rejected callback*/
@@ -95,6 +127,11 @@
     function navigateToBot() {
       window.location.href = 'bot.html';
     }
+
+    function validateForm() {
+      const firstName = document.getElementById('first-name').value;
+      document.querySelector('.start-chat-button').disabled = !firstName;
+    }
   </script>
 </head>
 <body>
@@ -102,8 +139,28 @@
   <div class="container">
     <h1>Welcome to the OP Genesys Cloud Web Messenger Test Page</h1>
     <p>Need assistance? Use the chat widget to connect with us!</p>
-    <button class="start-chat-button" onclick="startWebChat()">Start Web Chat</button>
-    <button class="bot-chat-button" onclick="navigateToBot()">Go to Bot Example</button>
+    <div class="form-group">
+      <label for="first-name" class="required">First Name:</label>
+      <input type="text" id="first-name" name="first-name" oninput="validateForm()">
+    </div>
+    <div class="form-group">
+      <label for="last-name">Last Name:</label>
+      <input type="text" id="last-name" name="last-name">
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email">
+    </div>
+    <div class="form-group">
+      <label for="student-id">Student ID:</label>
+      <input type="text" id="student-id" name="student-id">
+    </div>
+    <div class="form-group">
+      <label for="phone-number">Phone Number:</label>
+      <input type="text" id="phone-number" name="phone-number">
+    </div>
+    <button class="start-chat-button" onclick="startWebChat()" disabled>Start Web Chat</button>
+    <button class="navigate-bot-button" onclick="navigateToBot()">Go to Bot</button>
   </div>
 </body>
 </html>
