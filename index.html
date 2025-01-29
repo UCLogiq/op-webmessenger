@@ -67,16 +67,6 @@
         margin-top: 20px;
         display: none; /* Initially hide the button */
       }
-      .navigate-bot-button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        margin-top: 20px;
-      }
       .form-group {
         margin-bottom: 15px;
       }
@@ -111,57 +101,12 @@
           () => {
             /*fulfilled callback*/
             console.log("Messenger opened");
-            setAttributes();
           },
           (error) => {
             /*rejected callback*/
             console.log("Couldn't open messenger.", error);
           }
         );
-      }
-
-      // Set custom attributes for the chatter, this creates 'Guest' participant data in the conversation
-      // Participant data can be extracted in the Genesys Cloud Architect flow using the 'Get Participant Data' block
-      function setAttributes() {
-        // Get the values from the form fields
-        const firstName = document.getElementById("first-name").value;
-        const lastName = document.getElementById("last-name").value;
-        const email = document.getElementById("email").value;
-        const studentId = document.getElementById("student-id").value;
-        const phoneNumber = document.getElementById("phone-number").value;
-
-        // Set the custom attributes
-        Genesys("command", "Database.set", {
-          messaging: {
-            customAttributes: {
-              wm_first_name: firstName,
-              wm_last_name: lastName,
-              wm_email: email,
-              wm_student_id: studentId,
-              wm_phone_number: phoneNumber,
-            },
-          },
-        }, () => {
-          console.log("Attributes set successfully");
-          console.log(
-          "Web chat started with first name:",
-          firstName,
-          "last name:",
-          lastName,
-          "email:",
-          email,
-          "student ID:",
-          studentId,
-          "phone number:",
-          phoneNumber
-        );
-        }, (error) => {
-          console.log("Couldn't set attributes.", error);
-        });
-      }
-
-      function navigateToBot() {
-        window.location.href = "bot.html";
       }
 
       function validateForm() {
@@ -175,36 +120,9 @@
     <div class="container">
       <h1>Welcome to the OP Genesys Cloud Web Messenger Test Page</h1>
       <p>Need assistance? Use the chat widget to connect with us!</p>
-      <div class="form-group">
-        <label for="first-name" class="required">First Name:</label>
-        <input
-          type="text"
-          id="first-name"
-          name="first-name"
-          oninput="validateForm()"
-        />
-      </div>
-      <div class="form-group">
-        <label for="last-name">Last Name:</label>
-        <input type="text" id="last-name" name="last-name" />
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" />
-      </div>
-      <div class="form-group">
-        <label for="student-id">Student ID:</label>
-        <input type="text" id="student-id" name="student-id" />
-      </div>
-      <div class="form-group">
-        <label for="phone-number">Phone Number:</label>
-        <input type="text" id="phone-number" name="phone-number" />
-      </div>
-      <button class="start-chat-button" onclick="startWebChat()" disabled>
+      
+      <button class="start-chat-button" onclick="startWebChat()">
         Start Web Chat
-      </button>
-      <button class="navigate-bot-button" onclick="navigateToBot()">
-        Go to Bot
       </button>
     </div>
   </body>
